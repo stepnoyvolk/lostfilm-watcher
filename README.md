@@ -5,10 +5,9 @@ Hi its my homebew project please do not judge so strictly I realy do not have mu
 
 * clone app
 * configure db in /config/database.yml or just setup mysql with root/root passwd
+* Install google chrome 61
 * run rake tasks: db:create db:migrate serials_db:update
 * setup transmission-daemon on this node with rpc and no passwd
-* run 'rails s' in app folder and you will get it running on 3000 port
-* Install google chrome 61
 * add next environment variables to user which would run the app:
     * RAILS_ENV=production
     * TORRENTS_DATABASE_USER=root #user for apps db
@@ -17,11 +16,12 @@ Hi its my homebew project please do not judge so strictly I realy do not have mu
     * PHONE_NUMBER= #your phone number to send sms in format 7xxxxxxxxxx. you should be registrated on sms.ru 
     * TRANSMISSION_IP=127.0.0.1 #ip of machine with transmission daemon (beter be the same)
     * SMS_API_ID= #api id for your user on sms.ru
-    * LOSTFILM_RSS_URL=http://old.lostfilm.tv/rssdd.xml should be ketp as in example
+    * LOSTFILM_RSS_URL=http://old.lostfilm.tv/rssdd.xml #should be ketp as in example
     * MEDIA_TYPE=MP4 #media type to download (avi mp4 mkv)
     * LOSTFILM_UID= #lostfilm uid
     * LOSTFILM_PASS= #lostfilm pass
     * LOSTFILM_USESS= #lostfilm usess
+ * To run the app please read articles on installing rails app beyound nginx to use nginx to serve static assets
    
 
 ## Tasks wich should be added to cron
