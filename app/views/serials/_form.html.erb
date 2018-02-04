@@ -1,0 +1,47 @@
+<%= form_with(model: serial, local: true) do |form| %>
+  <% if serial.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(serial.errors.count, "error") %> prohibited this serial from being saved:</h2>
+
+      <ul>
+      <% serial.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :serial_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :image %>
+    <%= form.text_field :image, id: :serial_image %>
+  </div>
+
+  <div class="field">
+    <%= form.label :serial_link %>
+    <%= form.text_field :serial_link, id: :serial_serial_link %>
+  </div>
+
+  <div class="field">
+    <%= form.label :about_short %>
+    <%= form.text_field :about_short, id: :serial_about_short %>
+  </div>
+
+  <div class="field">
+    <%= form.label :about_full %>
+    <%= form.text_field :about_full, id: :serial_about_full %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tracked %>
+    <%= form.check_box :tracked, id: :serial_tracked %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

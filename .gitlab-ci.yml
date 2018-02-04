@@ -1,0 +1,29 @@
+image: "ruby:latest"
+Rake tests:
+ stage: test
+ services:
+ - mysql:latest
+ variables:
+  MYSQL_ROOT_PASSWORD: root
+ before_script:
+ - cp .gemrc ~/
+ - sed -i -- 's/localhost/mysql/g' config/database.yml
+ - gem install bundler --no-ri --no-rdoc
+ - bundle config git.allow_insecure true
+ - bundle install
+ script:
+ - rake db:create
+ - rake db:migrate
+ - rake test
+ - rake test:db
+ tags:
+    - docker
+ #- rake test:system
+Deploy to prod:
+ stage: deploy
+ script:
+ - screen -d -m /start.sh
+ only:
+ - master
+ tags:
+    - torrents-shell

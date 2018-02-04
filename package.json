@@ -1,0 +1,8 @@
+{
+  "name": "torrents",
+  "private": true,
+  "dependencies": {
+    "cmdtest": "^1.0.0",
+    "yarn": "^1.3.2"
+  }
+}

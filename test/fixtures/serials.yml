@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  image: MyString
+  serial_link: MyString
+  about_short: MyString
+  about_full: MyString
+  tracked: false
+
+two:
+  name: MyString
+  image: MyString
+  serial_link: MyString
+  about_short: MyString
+  about_full: MyString
+  tracked: false

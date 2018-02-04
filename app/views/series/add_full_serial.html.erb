@@ -1,0 +1,15 @@
+<center>
+<H1>Downloading full serial</H1>
+<h4>Enter serial name</h4>
+<form action="/services/download_full_serial" method="post">
+<input type="text" name="serial" list="serials_name">
+<datalist id="serials_name">
+  <%@serials.each do |serial| %>
+  <option value="<%=serial.name%>">
+  <%end%>
+ </datalist>
+<h4>Enter torrent location</h4>
+  <input type="text" name="torrent"><br>
+  <input type="submit" value="Add to dowlnoad query">
+</form>
+</center>

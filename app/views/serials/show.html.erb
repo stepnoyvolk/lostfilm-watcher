@@ -1,0 +1,71 @@
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<p id="notice"><%= notice %></p>
+<script>
+
+  function save_changes(value){
+  $.ajax({
+    type: "POST",
+    url: "/services/track",
+    data: {
+        id: <%=@serial.id%>-1,
+        value: value
+    }
+});}
+
+</script>
+<p>
+  <strong>Name:</strong>
+  <%= @serial.name %>
+</p>
+
+<p>
+  <img src="<%=@serial.image%>">
+  
+</p>
+
+<p>
+  <strong>About short:</strong>
+  <%= @serial.about_short %>
+</p>
+
+<p>
+  <strong>About full:</strong>
+  <%= @serial.about_full %>
+</p>
+
+<p>
+  <strong>Tracked:</strong>
+            <input type="checkbox" , value="Tracked:" , align="left" <% if @serial.tracked == true %> , checked
+          <%end%> onchange="save_changes(this.checked)" > </input>
+</p>
+
+<%= link_to 'Edit', edit_serial_path(@serial) %> |
+<%= link_to 'Back', serials_path %>
+
+<%@series= Series.all.where(:serial_id =>@serial.id).where(:downloaded => true)%>
+<h1>Episodes</h1>
+
+<table>
+
+  <tbody>
+    <% @series.each do |series| %>
+    <%series.serial_id=series.serial_id-1%>
+      <tr>
+        <td><img src="<%= Serial.all[(series.serial_id)].image %>" height="50%",width="50%"></td>
+        <td><%= series.serie_name %><br>
+        Season:<%= series.season %><br>
+        Episode:<%= series.serie %><br>
+        <form action="/services/play" method="post" target="_blank">
+          <input type="text" name="serial" value="<%= series.serial_name %>", hidden="true">
+          <input type="text" name="episode" value="<%= series.filename %>", hidden="true">
+          <input type="Submit" value="Play" class="btn btn-success">
+        </form>
+          </td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>

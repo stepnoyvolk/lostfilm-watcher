@@ -1,0 +1,123 @@
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.js" integrity="sha256-lY8OdlU6kUK/9tontLTYKJWThbOuSOlWtbINkP0DLKU=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.css" integrity="sha256-ibUTW+jDj+F8d1T1KZ4DOujRmVTFfvMKL9y14QgEaPQ=" crossorigin="anonymous" />  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js" integrity="sha256-7NgI/5l45Md7VEbs4MGG4HsRoHu+lXKQ/vUK1LvXDps=" crossorigin="anonymous"></script>
+  
+</head>
+<style>
+  .leftimg {
+    float: left;
+    /* Выравнивание по левому краю */
+    margin: 7px 7px 7px 0;
+    /* Отступы вокруг картинки */
+  }
+</style>
+
+<script>
+  function save_changes(value, id) {
+    $.ajax({
+      type: "POST",
+      url: "/services/track",
+      data: {
+        id: id - 1,
+        value: value
+      }
+    });
+    var id1 = id
+    switch (value) {
+      case true:
+        document.querySelectorAll('[title="' + id + '"]')[0].hidden = false;
+    $.notify({
+      icon: 'glyphicon glyphicon-star',
+      message: "Serial added to tracking list"
+    },{
+      type: 'info',
+    });
+        break;
+      case false:
+        document.querySelectorAll('[title="' + id + '"]')[0].hidden = true;
+          $.notify({
+            title: 'Serial tracking:',
+            message: "Serial removed from tracking list"
+            },{
+            type: 'info',
+            element:'tbody',
+            animate: {
+		          enter: 'animated fadeInUp',
+              exit: 'animated fadeOutRight'
+              },
+            placement: {
+              from: "bottom",
+              align: "left"
+            }
+          });
+        break;
+    }
+  }
+</script>
+<script>
+  function check_updates(id) {
+    $.ajax({
+      type: "POST",
+      url: "/services/check",
+      data: {
+        id: id - 1
+      }
+    });
+  }
+</script>
+<p id="notice">
+  <%= notice %>
+</p>
+<h1 align="center">Lostfilm Tracked Serials</h1>
+<center><input type="button", class="btn btn-primary", value="Check for updates on all tracked serials" , title="0" , onclick="check_updates(this.title)"> </input></center>
+<table align="center">
+  <% @serials.each do |serial| %>
+    <tr>
+      <td>
+        <h3>
+          <%= link_to serial.name, serial %>
+        </h3><br>
+        <img src="<%= serial.image %>" , class="leftimg">
+        <%name=/^.*Статус:/.match(serial.about_short).to_s.gsub("Статус:","")
+        status=/Статус:.*Год выхода:/.match(serial.about_short).to_s.gsub("Год выхода:","")
+        year=/Год выхода:.*Канал:/.match(serial.about_short).to_s.gsub("Канал:","")
+        chanel=/Канал:.*Жанр:/.match(serial.about_short).to_s.gsub("Жанр:","")
+        ganre=/Жанр:.*$/.match(serial.about_short).to_s
+        %>
+<%if name.to_s.delete("\t").length < 3 then
+          serial.about_short.split("\t"). each do |serialinfo|%>
+            <%if serialinfo !="" and serialinfo !="\t" and serialinfo!="\n" then%>
+              <%=serialinfo%> <br>
+                <%end%>
+                  <%end%>
+             <%else%>
+                  <%=name%><br>
+                  <%=status%><br>
+                  <%=year%><br>
+                  <%=chanel%><br>
+                  <%=ganre%><br>
+        <br>
+        <br>
+           <%end%>
+
+           <br>
+           <br><h4>
+               
+        <label style="white-space: nowrap">
+          Tracked:
+          <input style="{vertical-align: bottom}", type="checkbox" , value="<%=serial.id%>" , align="left" <% if serial.tracked==true %> , checked
+          <%end%>, onclick="save_changes(this.checked,this.value)", label="Tracked:" > 
+          </input>
+        <input type="button", class="btn btn-warning", value="Check for updates" , title="<%=serial.id.to_i%>" , align="left" , onclick="check_updates(this.title)" <% if serial.tracked !=true %> , hidden="hidden"
+        <%end%>> 
+        </input>
+        </label>
+        </h4>
+       <br>
+      </td>
+    </tr>
+    <% end %>
+</table>
+<br>

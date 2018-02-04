@@ -1,0 +1,61 @@
+  
+<p id="notice"><%= notice %></p>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<script>
+  function check_updates(id) {
+    $.ajax({
+      type: "POST",
+      url: "/services/download",
+      data: {
+        id: id - 1
+      }
+    });
+  }
+</script>
+<%zz=Series.all.where(:downloaded => true).last
+begin
+z=zz.id
+rescue
+  puts ""
+end%>
+<%if zz != nil%>
+<%@series1=Series.all.where(:downloaded => true).where("id > ?", zz.id-5).order('updated_at DESC')%>
+<center>
+<h1>Episodes</h1>
+<table>
+
+  <tbody>
+    <% @series1.each do |series| %>
+    <%series.serial_id=series.serial_id-1%>
+      <tr>
+        <td><img src="<%= Serial.all[(series.serial_id)].image %>"></td>
+        <td><h4>
+          <a href="serials/<%=series.serial_id+1%>"><%= series.serial_name %></a>
+          </h4>
+        <%= series.serie_name %><br>
+        Season:<%= series.season %><br>
+        Episode:<%= series.serie %><br>
+        Download date: <%= series.updated_at %><br>
+        <form action="/services/play" method="post" target="_blank">
+          <input type="text" name="serial" value="<%= series.serial_name %>", hidden="true">
+          <input type="text" name="episode" value="<%= series.filename %>", hidden="true">
+                
+            <input type="Submit" value="Play" class="btn btn-success">
+          
+        </form>
+        <div class="btn-group" role="group" >
+          <%= link_to 'Edit', edit_series_path(series), :class =>"btn btn-warning"%> <%= link_to 'Destroy', series, :class =>"btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
+        </div>
+        </td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+  </center>
+
+<%end%>
